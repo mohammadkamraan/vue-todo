@@ -1,5 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import TodoForm from '@/components/UI/Todo/TodoForm.vue'
+</script>
 
-<template></template>
+<template>
+  <TodoForm />
+</template>
 
 <style scoped></style>
