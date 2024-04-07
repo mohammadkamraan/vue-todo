@@ -8,7 +8,7 @@ export class RequestHandler {
     options.signal = abortController.signal
     const timeInMillisecond = timeout * 1000
     this.timeoutId = setTimeout(() => {
-      abortController.abort
+      abortController.abort()
     }, timeInMillisecond)
   }
 
@@ -17,22 +17,32 @@ export class RequestHandler {
     this.timeoutId = null
   }
 
-  public async sendRequest(url: string, options: RequestOptions, timeout?: number): Promise<any[]> {
-    let data: null | any = null
+  public async sendRequest<T>(
+    url: string,
+    options: RequestOptions,
+    filters?: { [key: string]: unknown },
+    timeout?: number
+  ): Promise<[T | null, Error | null]> {
+    let data: null | T = null
     let error: Error | null = null
 
-    const hasTimeout = timeout !== undefined
-    if (hasTimeout) {
+    for (const filter in filters) {
+      if (filters[filter] !== null) url += `?${filter}=${filters[filter]}`
+    }
+
+    if (timeout !== undefined) {
       this.setTimeoutForRequest(options, timeout)
     }
 
     try {
       const response = await fetch(url, options)
-      this.clearRequestTimeout()
       data = await response.json()
     } catch (err: unknown) {
       error = err as Error
+    } finally {
+      this.clearRequestTimeout()
     }
+
     return [data, error]
   }
 }

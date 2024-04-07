@@ -1,0 +1,21 @@
+@use './mixins.scss' as mixinsModule;
+
+.flex-justify-content-center {
+  @include mixinsModule.flex(row, center, null);
+}
+
+.flex-justify-content-start {
+  @include mixinsModule.flex(row, start, null);
+}
+
+.flex-align-items-center {
+  @include mixinsModule.flex(row, null, center);
+}
+
+.flex-column-align-items-center {
+  @include mixinsModule.flex(column, null, center);
+}
+
+.flex-column-justify-content-start {
+  @include mixinsModule.flex(column, start, null);
+}
